@@ -7,12 +7,12 @@ const app = express();
 const PORT = 8080;
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 1,
+  max: 10,
   message: "To many request !!!",
 });
 app.use(express.json());
 app.use(morgan("tiny"));
-
+app.use(limiter);
 // create a new Todo tasks
 app.post("/create", async (request, response) => {
   try {
@@ -22,7 +22,6 @@ app.post("/create", async (request, response) => {
       task: todo,
     });
   } catch (error) {
-    console.log(error);
     response.send("not updated");
   }
 });
@@ -42,7 +41,6 @@ app.get("/receive", async (request, response) => {
       });
     }
   } catch (error) {
-    console.log(error);
     response.send("not found any tasks");
   }
 });
@@ -57,8 +55,6 @@ app.put("/update", async (request, response) => {
         message: "Todo task id is required!!",
       });
     }
-
-    console.log(updateData);
 
     const updated = await TodoApi.update(
       { ...updateData },
