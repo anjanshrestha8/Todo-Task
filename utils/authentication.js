@@ -7,6 +7,6 @@ const hashPassword = (password) => bcrypt.hash(password, 10);
 const comparePassword = (password, hash) => bcrypt.compare(password, hash);
 
 const generateToken = (user) =>
-  jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  jwt.sign({ id: user.id }, "test", { expiresIn: "1h" });
 
 module.exports = { hashPassword, comparePassword, generateToken };
